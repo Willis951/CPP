@@ -1,0 +1,147 @@
+‘a’: 0.115
+‘b’: 0.046
+‘c’: 0.038
+‘d’: 0.099
+‘e’: 0.012
+‘f’: 0.102
+‘g’: 0.045
+‘h’: 0.071
+‘i’: 0.018
+‘j’: 0.031
+‘k’: 0.022
+‘l’: 0.014
+‘m’: 0.103
+‘n’: 0.009
+‘o’: 0.021
+‘p’: 0.044
+‘q’: 0.007
+‘r’: 0.030
+‘s’: 0.090
+‘t’: 0.068
+‘u’: 0.017
+‘v’: 0.092
+‘w’: 0.053
+‘x’: 0.091
+‘y’: 0.055
+‘z’: 0.066
+‘ ’: 0.177
+
+
+
+
+
+
+//Map will hold the frequency values for each Char
+//Key = Char, Mapped Value = Frequency
+
+unordered_map<char, int> frequency_map;
+unordered_map<char, string> huffmanCode;
+HT_Node* root;
+
+/* Huffman Tree Node*/
+struct HT_Node
+{
+	char ch;
+	int weight;
+	HT_Node* lc;
+	HT_Node* rc;
+};
+
+/* Function will create a new tree node */
+HT_Node* create_node(char ch, int freq, HT_Node* lc, HT_Node* rc)
+{
+	HT_Node* node = new HT_Node();
+
+	node->ch = ch;
+	node->weight = freq;
+	node->lc = lc;
+	node->rc = rc;
+
+	return node;
+}
+
+/* Object will be used to compare the weight values of two nodes 
+   This will order our heap */
+struct comp
+{
+	bool operator()(HT_Node* lc, HT_Node* rc)
+	{
+		return lc->weight > rc->weight;
+	}
+};
+
+char* encode(char* text)
+{
+	char* huffCode[20];
+	if (root == nullptr)
+		return;
+	if (!root->lc && !root->rc) {
+		huffmanCode[root->ch] = huffCode;
+	}
+
+}
+
+char* decode(char* hcode) 
+{
+
+}
+
+void buildHuffmanTree(string text)
+{
+	/* We will use a priority queue to store the nodes of Huffman Tree */
+	priority_queue<HT_Node*, vector<HT_Node*>, comp> pq;
+
+	/* Each char will be placed into a leaf node, and added to priority queue */
+	for (auto pair : frequency_map) {
+		pq.push(create_node(pair.first, pair.second, nullptr, nullptr));
+	}
+
+	/* While loop will remove leaf nodes and join them in a tree */
+	while (pq.size() != 1) {
+		/* Remove the two nodes with highest priority */
+		/* The lower frequency the higher the prioriry */
+		HT_Node* left = pq.top();
+		pq.pop();
+		HT_Node* right = pq.top();
+		pq.pop();
+
+		/* New internal node will be created with previous two nodes as children */
+		/* Internal node frequency is equal to the sum of children frequencies */
+		/* Add new internal node to the priority queue */
+		int sum = left->weight + right->weight;
+		pq.push(create_node('\0', sum, left, right));
+	}
+
+	/* Root node is the pointer to the top of the Huffman Tree */
+	root = pq.top();
+
+	/* Now we traverse the Huffman Tree and place Huffman Codes in a map */
+}
+
+void readFreq()
+{
+	ifstream inFile;
+	string line;
+	string temp_value;
+	string temp_key;
+	char key;
+    int mapped_value;
+	stringstream ss;
+	inFile.open("freq.txt");
+	if (!inFile) {
+		cout << "Unable to open file.";
+		cout << "Program will close.";
+		exit(1);
+	}
+
+	/* Extracting the key and its mapped value then placing them into a map */
+	while (getline(inFile, line)) {
+		temp_key = line.substr(1, 1);
+		key = temp_key[0];
+		temp_value = line.substr(7, 3);
+		mapped_value = stoi(temp_value);
+		frequency_map.insert(pair<char, int>(key, mapped_value));
+	}
+}
+
+*/
